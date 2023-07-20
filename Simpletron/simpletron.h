@@ -39,9 +39,11 @@ private:
     void mostrarMemoria();
     int acumulador;
     int contadorInstrucciones;
-    int codigoOperacionLMS;
-    int operador;
-    int registroIntrucciones;
-    int error( string );
+    int codigoDeOperacion;
+    int operando;
+    int registroDeInstruccion;
+    void mostrarError( string );
 
 };
+
+

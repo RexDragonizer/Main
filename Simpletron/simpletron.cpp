@@ -9,6 +9,13 @@ using std::cin;
 #include <string>
 using std::string;
 
+#include <iomanip>
+using std::showpos;
+using std::setfill;
+using std::noshowpos;
+using std::setw;
+using std::internal;
+
 #include "simpletron.h"
 
 //Constructor de simpletron para inicializar una instancia
@@ -22,9 +29,9 @@ Simpletron::Simpletron()
     //Inicializando todos las variables
     acumulador = 0;
     contadorInstrucciones = 0;
-    codigoOperacionLMS = 0;
-    operador = 0;
-    registroIntrucciones = 0;
+    codigoDeOperacion = 0;
+    operando = 0;
+    registroDeInstruccion = 0;
 }
 
 void Simpletron::mostrarMensajeInicioLMS()
@@ -100,46 +107,73 @@ void Simpletron::ejecutar()
     //bucle para ejecucion del programa
     while ( contadorInstrucciones < 100 )
     {
-        registroIntrucciones = memoria[ contadorInstrucciones ];
+        registroDeInstruccion = memoria[ contadorInstrucciones ];
         LMS();
     }
 }
 
 void Simpletron::LMS()
 {
-    int palabra;
+    //int palabra;
 
     //Divide la instruccion
-    codigoOperacionLMS = registroIntrucciones / 100;
-    operador = registroIntrucciones % 100;
+    codigoDeOperacion = registroDeInstruccion / 100;
+    operando = registroDeInstruccion % 100;
     ++contadorInstrucciones;
 
-    switch ( codigoOperacionLMS )
+    switch ( codigoDeOperacion )
     {
     case LEE:
+        cin >> memoria[ operando ];
+        break;
     case ESCRIBE:
+        cout << memoria[ operando ];
+        break;
     case CARGA:
+        acumulador = memoria[ operando ];
+        break;
     case ALMACENA:
+        memoria[ operando ] = acumulador;
+        break;
     case SUMA:
+        acumulador += memoria[ operando ];
+        break;
     case RESTA:
+        acumulador -= memoria[ operando ];
+        break;
     case DIVIDE:
+        acumulador /= memoria[ operando ];
+        break;
     case MULTIPLICA:
+        acumulador *= memoria[ operando ];
+        break;
     case BIFURCA:
+        contadorInstrucciones = operando;
+        break;
     case BIFURCANEG:
+        if ( acumulador < 0 )
+            contadorInstrucciones = operando;
+        break;
     case BIFURCACERO:
+        if ( acumulador == 0 )
+            contadorInstrucciones = operando;
+        break;
+    //Alto imprime el mensaje
     case ALTO:
-    default:
-        cout << "Instrucion invalida" << endl;
+        cout << "*** Termino la ejecucion de Simpletron ***" << endl;
+        mostrarMemoria();
+        contadorInstrucciones = 100;
+        break;
     }
-
- void Simpletron::mostrarMemoria()
- {
+}
+void Simpletron::mostrarMemoria()
+{
     cout << "REGISTROS:" << endl;
 	cout << "accumulador:             " << showpos << setw( 5 ) << setfill( '0' ) << internal << acumulador << endl;
 	cout << "contador        :        " << showpos << setw( 2 ) << setfill( '0' ) << internal << contadorInstrucciones << endl;
-	cout << "registroDeInstruccion:   " << showpos << setw( 5 ) << setfill( '0' ) << internal << registroIntrucciones << endl;
-	cout << "codigoDeOperacion:       " << showpos << setw( 2 ) << setfill( '0' ) << internal << codigoOperacionLMS << endl;
-	cout << "operador:                " << showpos << setw( 2 ) << setfill( '0' ) << internal << operador << endl;
+	cout << "registroDeInstruccion:   " << showpos << setw( 5 ) << setfill( '0' ) << internal << registroDeInstruccion << endl;
+	cout << "codigoDeOperacion:       " << showpos << setw( 2 ) << setfill( '0' ) << internal << codigoDeOperacion << endl;
+	cout << "operando:                " << showpos << setw( 2 ) << setfill( '0' ) << internal << operando << endl;
 	cout << "" << endl;
 	cout << "MEMORIA:" << endl;
 	cout << "   0     1     2     3     4     5     6     7     8     9 " << endl;
@@ -159,20 +193,36 @@ void Simpletron::LMS()
 		    }
             cout << endl;
     }
- }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+void Simpletron::mostrarError( string codigoError )
+{
+  // Mensaje de error si obtiene valores mayores a 9999 y menores a -9999
+  if ( codigoError.compare( "faltal" ) == 0 )
+  {
+      cout << "\n*** La ejecucion de Simpletron se termino en forma anormal ***" << endl;
+      contadorInstrucciones = 100;
+      mostrarMemoria();
+  }
+  // Mensaje de error si intenta dividir entre 0
+    if ( codigoError.compare( "divCero" ) == 0 )
+  {
+      cout << "\n*** Intento dividir entre 0 ***" << endl;
+      contadorInstrucciones = 100;
+      mostrarMemoria();
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
