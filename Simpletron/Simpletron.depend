@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1689831124 source:d:\users\gamaliel\repos\main\simpletron\simpletron.cpp
+	<iostream>
+	<string>
+	"simpletron.h"
+
+1689836771 d:\users\gamaliel\repos\main\simpletron\simpletron.h
+	<iostream>
+	<string>
+
+1689836721 source:d:\users\gamaliel\repos\main\simpletron\main.cpp
+	<iostream>
+	<string>
+	"simpletron.h"
+
