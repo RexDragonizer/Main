@@ -35,7 +35,7 @@ public:
 // Decclaracion de funciones y variables privadas
 private:
     int *memoria;
-    void establecerMemoria( int );
+    void establecerMemoria( int, int );
     void mostrarMemoria();
     int acumulador;
     int contadorInstrucciones;

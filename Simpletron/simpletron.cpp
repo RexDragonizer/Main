@@ -47,15 +47,14 @@ void Simpletron::mostrarMensajeInicioLMS()
 
 }
 
-void Simpletron::establecerMemoria( int entrada )
+void Simpletron::establecerMemoria( int contador, int entrada )
 {
-    memoria[ entrada ];
+    memoria[ contador ] = entrada;
 }
 
 void Simpletron::entradasLMS()
 {
      int entrada = 0;
-     bool entraVal;
      int instruccion = 0;
 
      // Bucle de entredas para guardar las instrucciones en la memoria.
@@ -69,7 +68,7 @@ void Simpletron::entradasLMS()
              }
              cout << instruccion << " ? ";
              cin >> entrada;
-             establecerMemoria( instruccion );
+             establecerMemoria( instruccion, entrada );
              instruccion++;
              if ( instruccion == 100 )
              {
@@ -88,7 +87,7 @@ void Simpletron::entradasLMS()
              }
             cout << instruccion << " ? ";
             cin >> entrada;
-            establecerMemoria( instruccion );
+            establecerMemoria( instruccion, entrada );
         }
         instruccion++;
         // Condicion de valor centinela
