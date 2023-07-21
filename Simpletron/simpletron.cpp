@@ -102,7 +102,7 @@ void Simpletron::entradasLMS()
 
 void Simpletron::ejecutar()
 {
-    cout << "***Empieza la ejecucion del programa***\n"; //mensaje de inicio de ejecucion
+    cout << "\n***Empieza la ejecucion del programa***\n"; //mensaje de inicio de ejecucion
     //bucle para ejecucion del programa
     while ( contadorInstrucciones < 100 )
     {
@@ -113,7 +113,7 @@ void Simpletron::ejecutar()
 
 void Simpletron::LMS()
 {
-    //int palabra;
+    int palabra;
 
     //Divide la instruccion
     codigoDeOperacion = registroDeInstruccion / 100;
@@ -123,7 +123,16 @@ void Simpletron::LMS()
     switch ( codigoDeOperacion )
     {
     case LEE:
-        cin >> memoria[ operando ];
+        cout << "\nEscribe una numero entre -9999 y 9999: ";
+        cin >> palabra;
+        if ( palabra <= 9999 && palabra >= -9999 )
+        {
+            memoria [ operando ] = palabra;
+        }
+        else
+        {
+            mostrarError( "fatal" );
+        }
         break;
     case ESCRIBE:
         cout << memoria[ operando ];
@@ -136,15 +145,31 @@ void Simpletron::LMS()
         break;
     case SUMA:
         acumulador += memoria[ operando ];
+        if ( acumulador > 9999 || acumulador < -9999 )
+        {
+            mostrarError( "fatal" );
+        }
         break;
     case RESTA:
         acumulador -= memoria[ operando ];
+         if ( acumulador > 9999 || acumulador < -9999 )
+        {
+            mostrarError( "fatal" );
+        }
         break;
     case DIVIDE:
+        if ( memoria[ operando ] == 0 )
+        {
+            mostrarError( "divCero" );
+        }
         acumulador /= memoria[ operando ];
         break;
     case MULTIPLICA:
         acumulador *= memoria[ operando ];
+          if ( acumulador > 9999 || acumulador < -9999 )
+        {
+            mostrarError( "fatal" );
+        }
         break;
     case BIFURCA:
         contadorInstrucciones = operando;
@@ -159,7 +184,7 @@ void Simpletron::LMS()
         break;
     //Alto imprime el mensaje
     case ALTO:
-        cout << "*** Termino la ejecucion de Simpletron ***" << endl;
+        cout << "\n*** Termino la ejecucion de Simpletron ***" << endl;
         mostrarMemoria();
         contadorInstrucciones = 100;
         break;
@@ -167,26 +192,27 @@ void Simpletron::LMS()
 }
 void Simpletron::mostrarMemoria()
 {
+    cout << "\n";
     cout << "REGISTROS:" << endl;
 	cout << "accumulador:             " << showpos << setw( 5 ) << setfill( '0' ) << internal << acumulador << endl;
 	cout << "contador        :        " << showpos << setw( 2 ) << setfill( '0' ) << internal << contadorInstrucciones << endl;
 	cout << "registroDeInstruccion:   " << showpos << setw( 5 ) << setfill( '0' ) << internal << registroDeInstruccion << endl;
 	cout << "codigoDeOperacion:       " << showpos << setw( 2 ) << setfill( '0' ) << internal << codigoDeOperacion << endl;
 	cout << "operando:                " << showpos << setw( 2 ) << setfill( '0' ) << internal << operando << endl;
-	cout << "" << endl;
+	cout << "\n" << endl;
 	cout << "MEMORIA:" << endl;
 	cout << "   0     1     2     3     4     5     6     7     8     9 " << endl;
 	// Print out the memory block.
 	cout << "00 ";
-	for ( int i=0; i<10 ; i++ )
+	for ( int i = 0; i < 10 ; i++ )
     {
 		cout << showpos << setw( 5 ) << setfill( '0' ) << internal  << memoria[ i ] << " ";
 	}
 	cout << endl;
-	for ( int s=10; s<100; s=s+10 )
+	for ( int s = 10; s < 100; s = s + 10 )
     {
 		    cout << noshowpos << s << " ";
-		    for ( int i=0; i<10; i++ )
+		    for ( int i = 0; i < 10; i++ )
 		    {
 			    cout << showpos << setw( 5 ) << setfill( '0' ) << internal  << memoria[ s+i ] << " ";
 		    }
@@ -197,7 +223,7 @@ void Simpletron::mostrarMemoria()
 void Simpletron::mostrarError( string codigoError )
 {
   // Mensaje de error si obtiene valores mayores a 9999 y menores a -9999
-  if ( codigoError.compare( "faltal" ) == 0 )
+  if ( codigoError.compare( "fatal" ) == 0 )
   {
       cout << "\n*** La ejecucion de Simpletron se termino en forma anormal ***" << endl;
       contadorInstrucciones = 100;
